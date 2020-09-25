@@ -1,2 +1,3 @@
 # Virtual-Assistant
-A virtual Assistant for desktop
+This program is a virtual Assistant for desktop
+
