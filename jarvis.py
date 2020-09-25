@@ -5,13 +5,28 @@ import wikipedia
 import webbrowser
 import os
 import smtplib
+import pandas as pd
+from bs4 import BeautifulSoup
+
+songs_list = {
+    '0':'https://www.youtube.com/watch?v=VOLKJJvfAbg',
+}
 
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-# print(voices[1].id)
-engine.setProperty('voice', voices[0].id)
+print(voices[0].id)
+engine.setProperty('voice', voices[1].id)
 
+
+# Rate
+rate = engine.getProperty('rate')  #getting details of current speaking rate
+print(rate) #print current voice rate
+engine.setProperty('rate', 150)
+
+# Volume 
+volume = engine.getProperty('volume')
+print(volume)
 
 def speak(audio):
     engine.say(audio)
@@ -28,7 +43,8 @@ def wishMe():
     else:
         speak('Good Evening sir!')
 
-    speak("I am cluster")
+    speak("I am Zira")
+    
 
 def takeCommond():
     # It takes microphone input form the user and return string output
@@ -47,8 +63,9 @@ def takeCommond():
     except Exception as e:
         print(e)
 
-        exit()
-        # print('Say that again please')
+        #exit()
+        print('Say that again please')
+        speak("I did not understand sir please speak again")
         return 'None'
     return query
 
@@ -60,13 +77,16 @@ def sendEmail(to, content):
     server.sendmail('owais.mfos@gmail.com', to , content)
     server.close()
 
+#def playMusic(song_list, song_name):
+
+
 
 if __name__ == '__main__':
     wishMe()
     takeCommond()
 
-   # while True:
-    if 1:
+    while True:
+    #if 1:
         query = takeCommond().lower()
 
         # Logic for executing tasks based on query.
@@ -87,11 +107,11 @@ if __name__ == '__main__':
         elif 'open stackoverflow' in query:
             webbrowser.open('stackoverflow.com')
 
-        elif 'play music' in query:
-            music_dir = 'D:\\your dir path'
-            songs = os.listdir(music_dir)
-            print(songs)
-            os.startfile(os.path.join(music_dir, songs[0]))
+        # elif 'play music' in query:
+        #     music_dir = 'D:\\your dir path'
+        #     songs = os.listdir(music_dir)
+        #     print(songs)
+        #     os.startfile(os.path.join(music_dir, songs[0]))
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime('%H:%M:%S')
@@ -117,7 +137,22 @@ if __name__ == '__main__':
                 print(e)
                 speak('sir email has not been sent, I think some problem there.')
 
-        elif 'shut down' in query:
-            speak('cluster is quiting')
+        elif 'play music' in query:
+            try:
+                speak('Which song play for you sir')
+                song_name = takeCommond()
+                for song in songs_list:
+                    if song == song_name:
+                        webbrowser.open(song)
+                        #playMusic(song_list, song_name)
+                        speak('ok sir song is playing')
+
+            except Exception as e:
+                print(e)
+                speak("There is no song in database")
+
+
+        elif 'band ho ja' in query:
+            speak('Zira is quiting')
             exit()
 
